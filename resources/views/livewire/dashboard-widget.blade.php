@@ -2,7 +2,7 @@
     <!-- Heading + actions -->
     <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="flex items-center gap-3">
-            <flux:heading size="xl">Dashboard</flux:heading>
+            <h1 class="text-2xl font-semibold text-zinc-900 dark:text-white">Dashboard</h1>
             <div class="hidden text-sm text-gray-500 sm:block">Statistik pegawai dan aktivitas terkini</div>
         </div>
         <div class="flex items-center gap-2">
@@ -52,7 +52,7 @@
             </div>
 
             <div class="flex items-center gap-2">
-                <flux:input wire:model.debounce.300ms="search" placeholder="Cari nama/NIP/jabatan/lembaga..." class="w-72" />
+                <input wire:model.debounce.300ms="search" placeholder="Cari nama/NIP/jabatan/lembaga..." class="w-72 rounded-md border-zinc-300 dark:border-zinc-700 dark:bg-zinc-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
                 <button wire:click="resetFilters" type="button" class="inline-flex items-center rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-50 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">Reset</button>
                 <button wire:click="export" type="button" class="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700">Export CSV</button>
             </div>

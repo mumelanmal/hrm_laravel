@@ -9,7 +9,7 @@
                     placeholder="Cari nama, NIP, NIK, email, jabatan, lembaga..."
                     class="w-80 rounded border border-zinc-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500 dark:border-zinc-700 dark:bg-zinc-900"
                 />
-                <flux:button type="submit" color="zinc" size="sm">Cari</flux:button>
+                <button type="submit" class="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-white bg-white dark:bg-zinc-800 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-700">Cari</button>
                 @if($search)
                     <button type="button" wire:click="$set('search','')" class="rounded border border-zinc-300 px-2 py-1 text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800">Clear</button>
                 @endif
@@ -27,8 +27,8 @@
         </div>
 
         <div class="flex flex-wrap items-center gap-2">
-            <a href="{{ route('employees.create') }}" wire:navigate>
-                <flux:button color="primary" size="sm">Tambah Pegawai</flux:button>
+            <a href="{{ route('employees.create') }}" wire:navigate class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                Tambah Pegawai
             </a>
             <a
                 href="{{ route('employees.export', array_filter([
@@ -37,12 +37,13 @@
                     'aktif' => $aktif !== 'all' ? $aktif : null,
                 ])) }}"
                 target="_blank"
+                class="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-white bg-white dark:bg-zinc-800 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-700"
             >
-                <flux:button color="zinc" size="sm">Export CSV</flux:button>
+                Export CSV
             </a>
-            <flux:button size="sm" wire:click="toggleView" color="zinc">
+            <button type="button" wire:click="toggleView" class="inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-semibold text-zinc-900 dark:text-white bg-white dark:bg-zinc-800 shadow-sm ring-1 ring-inset ring-zinc-300 dark:ring-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-700">
                 {{ $viewMode === 'compact' ? 'Tampilan Detail' : 'Tampilan Ringkas' }}
-            </flux:button>
+            </button>
             <button type="button" wire:click="$set('search',''); $set('status','all'); $set('aktif','all'); $set('sortField','id'); $set('sortDirection','desc')" class="rounded border border-zinc-300 px-2 py-1 text-xs text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800">Reset</button>
         </div>
 
