@@ -77,6 +77,11 @@ class EmployeeController extends Controller
             'amanah' => 'position',
             'status kepegawaian' => 'status_kepegawaian',
             'tahun masuk' => 'tahun_masuk',
+            // Treat year/date joined as the same concept
+            'tahun_masuk' => 'tahun_masuk',
+            'date joined' => 'date_joined',
+            'tanggal masuk' => 'date_joined',
+            'tgl masuk' => 'date_joined',
             'golongan' => 'golongan',
             'pangkat' => 'pangkat',
             '' => 'job_level', // handle empty header column (often job level like "Pegawai Madya")
@@ -169,6 +174,31 @@ class EmployeeController extends Controller
                 $data[$attr] = $val;
             }
 
+            // Harmonize tahun_masuk and date_joined: treat them as the same concept
+            if (!empty($data['tahun_masuk']) && empty($data['date_joined'])) {
+                $year = trim((string)$data['tahun_masuk']);
+                // If value looks like a 4-digit year, assume Jan 1st of that year
+                if (preg_match('/^\d{4}$/', $year)) {
+                    $data['date_joined'] = $year . '-01-01';
+                } else {
+                    // Try parsing as a date and keep original tahun_masuk
+                    $parsed = $this->parseDate($year);
+                    if ($parsed) {
+                        $data['date_joined'] = $parsed;
+                        // Also derive tahun_masuk (year) from parsed date for consistency
+                        $data['tahun_masuk'] = substr($parsed, 0, 4);
+                    }
+                }
+            } elseif (!empty($data['date_joined']) && empty($data['tahun_masuk'])) {
+                // Derive year from date_joined
+                try {
+                    $dt = Carbon::parse($data['date_joined']);
+                    $data['tahun_masuk'] = (string)$dt->year;
+                } catch (\Throwable $e) {
+                    // ignore parse error; leave tahun_masuk empty
+                }
+            }
+
             if (empty($data['name']) && empty($data['employee_number'])) {
                 continue; // nothing useful
             }
@@ -248,6 +278,64 @@ class EmployeeController extends Controller
         $this->authorize('delete', $employee);
         $employee->delete();
         return back()->with('status', 'Employee deleted');
+    }
+
+    /**
+     * Mark employee as resigned (soft delete)
+     */
+    public function resign(Request $request, Employee $employee)
+    {
+        $this->authorize('update', $employee);
+
+        $request->validate([
+            'date_resigned' => 'required|date',
+            'alasan_resign' => 'nullable|string|max:255',
+            'keterangan' => 'nullable|string',
+        ]);
+
+        $employee->update([
+            'date_resigned' => $request->date_resigned,
+            'alasan_resign' => $request->alasan_resign,
+            'keterangan' => $request->keterangan,
+            'aktif' => 'Nonaktif',
+        ]);
+
+        // Soft delete the employee
+        $employee->delete();
+
+        return back()->with('status', 'Pegawai berhasil diresign');
+    }
+
+    /**
+     * Restore a resigned employee
+     */
+    public function restore(Request $request, $id)
+    {
+        $employee = Employee::onlyTrashed()->findOrFail($id);
+        $this->authorize('restore', $employee);
+
+        $employee->restore();
+        $employee->update([
+            'aktif' => 'Aktif',
+            'date_resigned' => null,
+            'alasan_resign' => null,
+            'keterangan' => null,
+        ]);
+
+        return back()->with('status', 'Pegawai berhasil dipulihkan');
+    }
+
+    /**
+     * Permanently delete an employee
+     */
+    public function forceDestroy(Request $request, $id)
+    {
+        $employee = Employee::withTrashed()->findOrFail($id);
+        $this->authorize('forceDelete', $employee);
+
+        $employee->forceDelete();
+
+        return back()->with('status', 'Pegawai dihapus permanen');
     }
 
     private function parseDate($value)

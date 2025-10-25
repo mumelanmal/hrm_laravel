@@ -40,7 +40,13 @@ new class extends Component {
                             <span class="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">{{ $employee->aktif }}</span>
                         @endif
                         @if($employee->date_joined)
-                            <span class="inline-flex items-center rounded-full border border-gray-200 bg-white/70 px-2 py-0.5 text-xs text-gray-700 backdrop-blur dark:border-gray-700 dark:bg-gray-800/70 dark:text-gray-200">Masuk: {{ $employee->date_joined?->format('d M Y') }}</span>
+                            <span class="inline-flex items-center rounded-full border border-gray-200 bg-white/70 px-2 py-0.5 text-xs text-gray-700 backdrop-blur dark:border-gray-700 dark:bg-gray-800/70 dark:text-gray-200">
+                                Masuk: {{ $employee->date_joined?->format('d M Y') }}
+                            </span>
+                        @elseif($employee->tahun_masuk)
+                            <span class="inline-flex items-center rounded-full border border-gray-200 bg-white/70 px-2 py-0.5 text-xs text-gray-700 backdrop-blur dark:border-gray-700 dark:bg-gray-800/70 dark:text-gray-200">
+                                Masuk: {{ $employee->tahun_masuk }}
+                            </span>
                         @endif
                     </div>
                 </div>

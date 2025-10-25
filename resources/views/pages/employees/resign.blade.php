@@ -24,16 +24,9 @@ new class extends Component {
         @enderror
 
         <div class="mb-6 rounded-xl border border-neutral-200 bg-white p-5 dark:border-neutral-700 dark:bg-zinc-900">
-            <form action="{{ route('resignedEmployees.import') }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                @csrf
-                <div class="flex items-center gap-4">
-                    <input type="file" name="csv_file" accept=".csv" required class="block text-sm" />
-                    <div class="text-xs text-zinc-500">Import CSV khusus pegawai resign (header fleksibel)</div>
-                </div>
-                <div>
-                    <button type="submit" class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">Import CSV Resign</button>
-                </div>
-            </form>
+            <div class="text-sm text-zinc-600 dark:text-zinc-300">
+                Import data resign kini terintegrasi pada import karyawan biasa. Sertakan kolom <code>date_resigned</code>, <code>alasan_resign</code>, dan <code>keterangan</code> untuk menandai resign. Data yang resign akan muncul sebagai soft-deleted.
+            </div>
         </div>
 
         <div class="rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-700 dark:bg-zinc-900">

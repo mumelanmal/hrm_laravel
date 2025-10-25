@@ -27,6 +27,12 @@ class ResignedEmployeeResource extends Resource
     
     protected static ?int $navigationSort = 2;
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        // Hide this resource; resigned_employees table has been consolidated into employees via Soft Deletes.
+        return false;
+    }
+
     public static function form(Form $form): Form
     {
         return $form

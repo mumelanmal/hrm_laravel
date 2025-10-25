@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\ResignedEmployee;
+use App\Models\Employee;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -12,12 +12,12 @@ class ResignedEmployeeIndex extends Component
 
     public string $search = '';
     public int $perPage = 15;
-    public string $sortField = 'date_resigned';
+    public string $sortField = 'deleted_at';
     public string $sortDirection = 'desc';
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'sortField' => ['except' => 'date_resigned'],
+        'sortField' => ['except' => 'deleted_at'],
         'sortDirection' => ['except' => 'desc'],
         'page' => ['except' => 1],
         'perPage' => ['except' => 15],
@@ -39,7 +39,7 @@ class ResignedEmployeeIndex extends Component
 
     public function render()
     {
-        $q = ResignedEmployee::query();
+        $q = Employee::onlyTrashed();
 
         if ($this->search) {
             $term = '%' . str_replace(' ', '%', $this->search) . '%';
@@ -56,9 +56,9 @@ class ResignedEmployeeIndex extends Component
         }
 
         $allowedSorts = [
-            'name','employee_number','nik','position','lembaga','date_joined','date_resigned'
+            'name','employee_number','nik','position','lembaga','date_joined','date_resigned','deleted_at'
         ];
-        $field = in_array($this->sortField, $allowedSorts) ? $this->sortField : 'date_resigned';
+        $field = in_array($this->sortField, $allowedSorts) ? $this->sortField : 'deleted_at';
         $dir = $this->sortDirection === 'asc' ? 'asc' : 'desc';
         $q->orderBy($field, $dir)->orderBy('id', 'desc');
 

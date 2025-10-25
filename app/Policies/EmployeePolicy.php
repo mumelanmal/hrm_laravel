@@ -31,4 +31,14 @@ class EmployeePolicy
     {
         return (bool) ($user->is_admin ?? false);
     }
+
+    public function restore(User $user, Employee $employee): bool
+    {
+        return (bool) ($user->is_admin ?? false);
+    }
+
+    public function forceDelete(User $user, Employee $employee): bool
+    {
+        return (bool) ($user->is_admin ?? false);
+    }
 }

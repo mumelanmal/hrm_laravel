@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 class Employee extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'employee_number',
@@ -40,11 +41,15 @@ class Employee extends Model
         'ijazah_tambahan',
         'lembaga',
         'aktif',
+        'date_resigned',
+        'alasan_resign',
+        'keterangan',
     ];
 
     protected $casts = [
         'date_of_birth' => 'date',
         'date_joined' => 'date',
+        'date_resigned' => 'date',
         'npwp' => 'encrypted',
         'bank_account' => 'encrypted',
         'bpjs_number' => 'encrypted',

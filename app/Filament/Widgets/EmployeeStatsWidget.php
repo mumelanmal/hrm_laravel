@@ -3,7 +3,6 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Employee;
-use App\Models\ResignedEmployee;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -11,10 +10,10 @@ class EmployeeStatsWidget extends BaseWidget
 {
     protected function getStats(): array
     {
-        $totalEmployees = Employee::count();
-        $activeEmployees = Employee::where('aktif', 'Aktif')->count();
-        $inactiveEmployees = Employee::where('aktif', 'Nonaktif')->count();
-        $resignedTotal = ResignedEmployee::count();
+    $totalEmployees = Employee::count();
+    $activeEmployees = Employee::where('aktif', 'Aktif')->count();
+    $inactiveEmployees = Employee::where('aktif', 'Nonaktif')->count();
+    $resignedTotal = Employee::onlyTrashed()->count();
         
         return [
             Stat::make('Total Pegawai', $totalEmployees)

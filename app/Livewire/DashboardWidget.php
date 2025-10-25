@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Employee;
-use App\Models\ResignedEmployee;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
@@ -60,7 +59,7 @@ class DashboardWidget extends Component
             'aktif' => Employee::where('aktif', 'Aktif')->count(),
             'tetap' => Employee::where('status_kepegawaian', 'Pegawai Tetap')->count(),
             'kontrak' => Employee::where('status_kepegawaian', 'Kontrak')->count(),
-            'resign' => ResignedEmployee::count(),
+            'resign' => Employee::onlyTrashed()->count(),
         ];
     }
 
